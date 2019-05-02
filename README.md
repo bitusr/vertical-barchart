@@ -6,10 +6,10 @@ If less years rendered, then the bars should be centered.
 There can be no gaps or skipping, i.e. if there is no data for a year, 
 then the bar changes color and I put text "no data" inside the bar.
 
-**x** - years
-**y** - money for profit, revenue, taxes. number - for employees
+- **x** - years
+- **y** - money for profit, revenue, taxes. number - for employees
 
-Tab values are:
+**Tab values:**
 - Profit
 - Revenue
 - Taxes
