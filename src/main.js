@@ -4,6 +4,7 @@ const SECS_PER_MIN = 60;
 const MINS_PER_HOUR = 60;
 const HOURS_PER_DAY = 24;
 const DAYS_PER_YEAR = 365;
+const DETAILS_BARCHART_TABS = [`profit`, `revenue`, `taxes`, `employee_count`];
 
 // UTILS
 const getLastYears = (currentTimeInMillisecs, numberOfYears) => {
@@ -47,6 +48,8 @@ const update = (data, tab) => {
   const years = getLastYears(Date.now(), 10);
   console.log(data[tab], `data[tab]`);
   console.log(years, `years`);
+
+  yScale.domain([0, ])
 };
 
 update(DUMMY_DATA_NEW, `profit`);

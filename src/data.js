@@ -38,34 +38,55 @@ const DUMMY_DATA = {
 const DUMMY_DATA_NEW = {
   "profit": {
     "2015": {
-      "number": 500,
-      "currency": "USD"
+      "value": 500,
+      "unit": "USD",
+      "source": "X"
     },
     "2016": {
-      "number": 400,
-      "currency": "USD"
+      "value": 400,
+      "unit": "USD",
+      "source": "X"
     }
   },
   "revenue": {
     "2016": {
-      "number": 200,
-      "currency": "GBP"
+      "value": 200,
+      "unit": "GBP",
+      "source": "Y"
     },
     "2017": {
-      "number": 250,
-      "currency": "GBP"
+      "value": 250,
+      "unit": "GBP",
+      "source": "Y"
     }
   },
   "taxes": {
     "2016": {
-      "number": 80,
-      "currency": "EUR"
+      "value": 80,
+      "unit": "EUR",
+      "source": "Y"
+    },
+    "2018": {
+      "value": 80,
+      "unit": "EUR",
+      "source": "Y"
     },
   },
-  "employees": {
-    "2016": {
-      "number": 80,
-      "currency": "EUR"
+  "employee_count": {
+    "2017": {
+      "value": 1305,
+      "unit": "",
+      "source": "Y"
+    },
+    "2018": {
+      "value": 990,
+      "unit": "",
+      "source": "Y"
+    },
+    "2019": {
+      "value": 1200,
+      "unit": "",
+      "source": "Y"
     },
   },
 };
