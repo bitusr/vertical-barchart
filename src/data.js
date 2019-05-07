@@ -38,11 +38,13 @@ const DUMMY_DATA = {
 const DUMMY_DATA_NEW = {
   "profit": {
     "2015": {
+      "year": 2015,
       "value": 500,
       "unit": "USD",
       "source": "X"
     },
     "2016": {
+      "year": 2016,
       "value": 400,
       "unit": "USD",
       "source": "X"
@@ -50,11 +52,13 @@ const DUMMY_DATA_NEW = {
   },
   "revenue": {
     "2016": {
+      "year": 2016,
       "value": 200,
       "unit": "GBP",
       "source": "Y"
     },
     "2017": {
+      "year": 2017,
       "value": 250,
       "unit": "GBP",
       "source": "Y"
@@ -62,11 +66,13 @@ const DUMMY_DATA_NEW = {
   },
   "taxes": {
     "2016": {
+      "year": 2016,
       "value": 80,
       "unit": "EUR",
       "source": "Y"
     },
     "2018": {
+      "year": 2018,
       "value": 80,
       "unit": "EUR",
       "source": "Y"
@@ -74,19 +80,22 @@ const DUMMY_DATA_NEW = {
   },
   "employee_count": {
     "2017": {
+      "year": 2017,
       "value": 1305,
       "unit": "",
-      "source": "Y"
+      "source": "Z"
     },
     "2019": {
+      "year": 2019,
       "value": 1200,
       "unit": "",
-      "source": "Y"
+      "source": "Z"
     },
     "2018": {
+      "year": 2018,
       "value": 990,
       "unit": "",
-      "source": "Y"
+      "source": "Z"
     },
   },
 };

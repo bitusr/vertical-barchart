@@ -6,7 +6,13 @@ const HOURS_PER_DAY = 24;
 const DAYS_PER_YEAR = 365;
 const DETAILS_BARCHART_TABS = [`profit`, `revenue`, `taxes`, `employee_count`];
 
-// UTILS
+// DATA HANDLING
+const getLastTenYearsData = (data, tab) => {
+  const years = getLastYears(Date.now(), 10).reverse();
+  const orderedData = years.map(it => data.hasOwnProperty(tab) && data[tab][`${unwrapFromQuotes(it)}`]);
+  return cleanData(orderedData);
+};
+
 const getLastYears = (currentTimeInMillisecs, numberOfYears) => {
   return [...Array(numberOfYears)].map((it, i) => {
     if (i === 0) return getYear(currentTimeInMillisecs);
@@ -21,6 +27,16 @@ const getLastYears = (currentTimeInMillisecs, numberOfYears) => {
 const getYear = currentTimeInMillisecs => new Date(currentTimeInMillisecs).getFullYear();
 
 const getOneYearInMillisecs = () => MILLISECS_PER_SEC * SECS_PER_MIN * MINS_PER_HOUR * HOURS_PER_DAY * DAYS_PER_YEAR;
+
+const unwrapFromQuotes = entry => {
+  if (typeof entry === `number`) return entry;
+  if (typeof entry !== 'string') return;
+  const it = entry.trim();
+  const quote = `"`;
+  if (it[0] === quote && it[it.length - 1] === quote) return it.slice(1, -1);
+};
+
+const cleanData = data => data.filter(it => it !== undefined);
 
 // GRAPH
 const margin = { top: 20, right: 40, bottom: 20, left: 60 };
@@ -45,11 +61,11 @@ svg.append(`g`)
   .attr(`id`, `y-axis`);
 
 const update = (data, tab) => {
-  const years = getLastYears(Date.now(), 10);
-  console.log(data[tab], `data[tab]`);
-  console.log(years, `years`);
+  const lastTenYearsData = getLastTenYearsData(data, tab);
 
-  yScale.domain([0, ])
+  yScale.domain([0, d3.max(lastTenYearsData, d => +d.value)]);
+
+
 };
 
-update(DUMMY_DATA_NEW, `profit`);
+update(DUMMY_DATA_NEW, `employee_count`);
