@@ -78,13 +78,13 @@ const DUMMY_DATA_NEW = {
       "unit": "",
       "source": "Y"
     },
-    "2018": {
-      "value": 990,
+    "2019": {
+      "value": 1200,
       "unit": "",
       "source": "Y"
     },
-    "2019": {
-      "value": 1200,
+    "2018": {
+      "value": 990,
       "unit": "",
       "source": "Y"
     },
