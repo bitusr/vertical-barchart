@@ -109,6 +109,12 @@ const update = (rawData, tab, years) => {
     .attr(`class`, `bar`)
     .attr(`transform`, d => `translate(${xScale(+d.year)}, 0)`);
 
+  barEnter.append(`rect`)
+    .attr(`class`, `bar-rect`)
+    .attr(`y`, d => yScale(d.value))
+    .attr(`height`, d => height - yScale(d.value))
+    .attr(`width`, 32);
+
   d3.select(`#x-axis`).call(customXAxis);
 
   d3.select(`#y-axis`).call(customYAxis);

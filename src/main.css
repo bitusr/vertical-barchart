@@ -16,3 +16,10 @@ body {
   padding-top: 20px;
   box-sizing: border-box;
 }
+
+.bar-rect {
+  stroke-width: 2px;
+  stroke: darkorange;
+  fill: orange;
+  fill-opacity: 0.5;
+}
