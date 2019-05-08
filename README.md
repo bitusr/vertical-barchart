@@ -1,15 +1,19 @@
-# Vertical barchart
+# Vertical bar chart
 
-One barchart which has 4 tabs. Switching a tab means to switch **y** axis.
-Maximum number of years rendered is 10. There can be less years rendered.
+##  Description
+One bar chart with 4 tabs. 
+Switching a tab means to switch **y** axis.
+There can be less than 10 years rendered. 
 If less years rendered, then the bars should be centered.
-There can be no gaps or skipping, i.e. if there is no data for a year, 
-then the bar changes color and I put text "no data" inside the bar.
+If there is no data for a year, then the bar changes color 
+to grey and the text inside the bar says *No data*.
 
-- **x** - years
-- **y** - money for profit, revenue, taxes. number - for employees
+## Axes and Bars
+- **x** - `years`
+- **y** - `money`: profit, revenue, taxes. `number`: employees
+- Number of years rendered: 10 or less
 
-**Tab values:**
+## Tab values
 - Profit
 - Revenue
 - Taxes
