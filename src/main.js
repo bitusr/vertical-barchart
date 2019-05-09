@@ -41,7 +41,7 @@ const cleanData = data => data.filter(it => it !== undefined);
 // GRAPH
 // =====================================================================================================================
 const margin = { top: 20, right: 40, bottom: 20, left: 50 };
-const width = 960 - margin.left - margin.right;
+const width = 860 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 
 const svg = d3.select(`#wrapper`)

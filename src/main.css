@@ -18,6 +18,7 @@ body {
 }
 
 .bar-rect {
+  width: 32px;
   stroke-width: 2px;
   stroke: darkorange;
   fill: orange;
