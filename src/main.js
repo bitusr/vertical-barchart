@@ -4,7 +4,14 @@ const SECS_PER_MIN = 60;
 const MINS_PER_HOUR = 60;
 const HOURS_PER_DAY = 24;
 const DAYS_PER_YEAR = 365;
-const DETAILS_BARCHART_TABS = [`profit`, `revenue`, `taxes`, `employee_count`];
+
+// DOM CONSTANTS
+const Tabs = {
+  profit: document.querySelector(`#tab-profit`),
+  revenue: document.querySelector(`#tab-revenue`),
+  employee_count: document.querySelector(`#tab-employees`),
+  taxes: document.querySelector(`#tab-taxes`)
+};
 
 // UTILS
 const getLastYears = (currentTimeInMillisecs, numberOfYears) => {
@@ -39,7 +46,6 @@ const unwrapFromQuotes = entry => {
 const cleanData = data => data.filter(it => it !== undefined);
 
 // GRAPH
-// =====================================================================================================================
 const margin = { top: 20, right: 40, bottom: 20, left: 50 };
 const width = 860 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
@@ -113,6 +119,12 @@ const update = (rawData, tab, years) => {
     .attr(`y`, d => d.value >= 0 ? yScale(d.value) : yScale(0))
     .attr(`height`, d => Math.abs(yScale(d.value) - yScale(0)));
 
+  bar = barEnter.merge(bar);
+
+  bar.select(`.bar-rect`)
+    .transition().duration(600)
+    .attr(`height`, d => Math.abs(yScale(d.value) - yScale(0)));
+
   d3.select(`#x-axis`).call(customXAxis);
 
   d3.select(`#y-axis`).call(customYAxis);
@@ -120,4 +132,22 @@ const update = (rawData, tab, years) => {
 
 
 const years = getLastYears(Date.now(), 10).reverse();
+
+Tabs.profit.addEventListener(`click`, e => {
+  update(DUMMY_DATA_NEW, `profit`, years);
+});
+
+Tabs.revenue.addEventListener(`click`, e => {
+  update(DUMMY_DATA_NEW, `revenue`, years);
+});
+
+Tabs.employee_count.addEventListener(`click`, e => {
+  update(DUMMY_DATA_NEW, `employee_count`, years);
+});
+
+Tabs.taxes.addEventListener(`click`, e => {
+  update(DUMMY_DATA_NEW, `taxes`, years);
+});
+
 update(DUMMY_DATA_NEW, `profit`, years);
+

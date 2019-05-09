@@ -17,17 +17,23 @@ body {
 
 .tab {
   width: 114px;
-  height: 34px;
+  height: 45px;
   border-bottom: 1px solid grey;
   box-sizing: border-box;
   text-align: center;
-  line-height: 34px;
+  line-height: 45px;
   cursor: pointer;
+  user-select: none;
 }
 
 .tab:hover {
-  border-bottom: 3px solid orange;
-  color: darkorange;
+  border-bottom: 3px solid orangered;
+  color: orangered;
+}
+
+.tab:active {
+  border-bottom: 3px solid #ffc500;
+  color: #ffc500;
 }
 
 .wrapper {
@@ -45,4 +51,8 @@ body {
   stroke: darkorange;
   fill: orange;
   fill-opacity: 0.5;
+}
+
+.bar-rect:hover {
+  fill: orangered;
 }
