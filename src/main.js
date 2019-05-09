@@ -122,7 +122,7 @@ const update = (rawData, tab, years) => {
   bar = barEnter.merge(bar);
 
   bar.select(`.bar-rect`)
-    .transition().duration(600)
+    // .transition().duration(600)
     .attr(`height`, d => Math.abs(yScale(d.value) - yScale(0)));
 
   d3.select(`#x-axis`).call(customXAxis);
@@ -130,9 +130,7 @@ const update = (rawData, tab, years) => {
   d3.select(`#y-axis`).call(customYAxis);
 };
 
-
-const years = getLastYears(Date.now(), 10).reverse();
-
+// EVENTS
 Tabs.profit.addEventListener(`click`, e => {
   update(DUMMY_DATA_NEW, `profit`, years);
 });
@@ -149,5 +147,7 @@ Tabs.taxes.addEventListener(`click`, e => {
   update(DUMMY_DATA_NEW, `taxes`, years);
 });
 
+// INITIAL CALL
+const years = getLastYears(Date.now(), 10).reverse();
 update(DUMMY_DATA_NEW, `profit`, years);
 
