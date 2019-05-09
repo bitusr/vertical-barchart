@@ -96,7 +96,7 @@ const update = (rawData, tab, years) => {
 
   xScale.domain(years);
 
-  yScale.domain([0, d3.max(data, d => +d.value)]);
+  yScale.domain(d3.extent(data, d => +d.value));
 
   let bar = svg.selectAll(`.bar`)
     .data(data, d => d.value);
@@ -110,8 +110,8 @@ const update = (rawData, tab, years) => {
 
   barEnter.append(`rect`)
     .attr(`class`, `bar-rect`)
-    .attr(`y`, d => yScale(d.value))
-    .attr(`height`, d => height - yScale(d.value))
+    .attr(`y`, d => d.value >= 0 ? yScale(d.value) : yScale(0))
+    .attr(`height`, d => Math.abs(yScale(d.value) - yScale(0)))
     .attr(`width`, 32);
 
   d3.select(`#x-axis`).call(customXAxis);
