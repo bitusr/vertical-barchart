@@ -8,6 +8,28 @@ body {
   align-items: center;
 }
 
+.navbar-tabs {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.tab {
+  width: 114px;
+  height: 34px;
+  border-bottom: 1px solid grey;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 34px;
+  cursor: pointer;
+}
+
+.tab:hover {
+  border-bottom: 3px solid orange;
+  color: darkorange;
+}
+
 .wrapper {
   display: flex;
   justify-content: center;
