@@ -51,6 +51,7 @@ const svg = d3.select(`#wrapper`)
   .append(`g`)
   .attr(`transform`, `translate(${margin.left}, ${margin.top})`);
 
+// SCALES
 const xScale = d3.scaleBand()
   .range([0, width])
   .padding(0.5);
@@ -58,6 +59,7 @@ const xScale = d3.scaleBand()
 const yScale = d3.scaleLinear()
   .range([height, 0]);
 
+// AXIS
 svg.append(`g`)
   .attr(`id`, `x-axis`)
   .attr(`transform`, `translate(0, ${height})`);
@@ -65,8 +67,6 @@ svg.append(`g`)
 svg.append(`g`)
   .attr(`id`, `y-axis`);
 
-
-// AXIS
 const xAxis = d3.axisBottom(xScale);
 
 const yAxis = d3.axisLeft(yScale)
@@ -84,13 +84,12 @@ const customYAxis = g => {
     .select(`.domain`).remove();
 
   g.selectAll(`.tick line`)
-    .attr(`stroke`, `#d8d8d8`)
+    .attr(`stroke`, `#d8d8d8`);
 
   g.selectAll(`.tick text`)
     .attr(`x`, -20)
     .attr(`dy`, 4)
 };
-// END AXIS
 
 const update = (rawData, tab, years) => {
   const data = getLastTenYearsData(rawData, tab, years);
@@ -122,4 +121,4 @@ const update = (rawData, tab, years) => {
 
 
 const years = getLastYears(Date.now(), 10).reverse();
-update(DUMMY_DATA_NEW, `employee_count`, years);
+update(DUMMY_DATA_NEW, `profit`, years);
