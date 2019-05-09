@@ -18,3 +18,6 @@ to grey and the text inside the bar says *No data*.
 - Revenue
 - Taxes
 - Employees
+
+## Similar examples
+- [Vertical bar chart with negative values (Land & Ocean Temperature Annual Index, 1880 - 2015)](https://bl.ocks.org/datafunk/8a17b5f476a40a08ed17)
