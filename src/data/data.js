@@ -1,41 +1,4 @@
 const DUMMY_DATA = {
-  "2005": {
-    "profit": {
-      "number": 500,
-      "currency": "USD"
-    },
-    "revenue": {
-      "number": 200,
-      "currency": "GBP"
-    },
-    "taxes": {
-      "number": 80,
-      "currency": "EUR"
-    },
-    "employees": {
-      "number": 2000
-    }
-  },
-  "2006": {
-    "profit": {
-      "number": 500,
-      "currency": "USD"
-    },
-    "revenue": {
-      "number": 200,
-      "currency": "GBP"
-    },
-    "taxes": {
-      "number": 40,
-      "currency": "GBP"
-    },
-    "employees": {
-      "number": 2000
-    }
-  }
-};
-
-const DUMMY_DATA_NEW = {
   "profit": {
     "2015": {
       "year": 2015,

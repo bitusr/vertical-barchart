@@ -138,7 +138,7 @@ const update = (getTabData, tab) => {
 
 // INITIAL CALL
 const years = getLastYears(Date.now(), 10).reverse();
-const getTabData = dataHandler(DUMMY_DATA_NEW, years);
+const getTabData = dataHandler(DUMMY_DATA, years);
 update(getTabData, `profit`);
 
 // EVENTS
