@@ -33,18 +33,22 @@ const startsWithDbQuote = str => str[0] === `"`;
 
 const endsWithDbQuote = str => str[str.length - 1] === `"`;
 
-const removeUndefined = arr => arr.filter(it => it !== undefined);
+const isWrappedInDbQuotes = str => startsWithDbQuote(str) && endsWithDbQuote(str);
+
+const isNotUndefined = value => value !== undefined;
 
 // DATA HANDLING
 const dataHandler = (data, years) => tab => {
-  const orderedData = years.map(it => data.hasOwnProperty(tab) && data[tab][`${unwrapFromQuotes(it)}`]);
-  return removeUndefined(orderedData);
+  return years
+    .map(it => data.hasOwnProperty(tab) && data[tab][`${unwrapFromQuotes(it)}`])
+    .filter(isNotUndefined);
 };
 
-const unwrapFromQuotes = entry => {
-  if (typeof entry !== 'string') return entry;
-  const it = entry.trim();
-  if (startsWithDbQuote(it) && endsWithDbQuote(it)) return it.slice(1, -1);
+const unwrapFromQuotes = str => {
+  if (typeof str !== 'string') return str;
+  const trimmedStr = str.trim();
+  if (isWrappedInDbQuotes(trimmedStr)) return trimmedStr.slice(1, -1);
+  return str;
 };
 
 // GRAPH
@@ -66,6 +70,11 @@ const xScale = d3.scaleBand()
 
 const yScale = d3.scaleLinear()
   .range([height, 0]);
+
+const getYDomainExtent = data => {
+  if (d3.min(data, d => +d.value) >= 0) return [0, d3.max(data, d => +d.value)];
+  else return d3.extent(data, d => +d.value);
+};
 
 // AXIS
 svg.append(`g`)
@@ -97,11 +106,6 @@ const customYAxis = g => {
   g.selectAll(`.tick text`)
     .attr(`x`, -20)
     .attr(`dy`, 4)
-};
-
-const getYDomainExtent = data => {
-  if (d3.min(data, d => +d.value) >= 0) return [0, d3.max(data, d => +d.value)];
-  else return d3.extent(data, d => +d.value);
 };
 
 const update = (getTabData, tab) => {
