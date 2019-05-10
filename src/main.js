@@ -108,7 +108,6 @@ const update = (rawData, tab, years) => {
   xScale.domain(years);
 
   yScale.domain(getYDomainExtent(data));
-  console.log(getYDomainExtent(data))
 
   let bar = svg.selectAll(`.bar`)
     .data(data, d => d.value);
