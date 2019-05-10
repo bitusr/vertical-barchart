@@ -33,13 +33,11 @@ const computeOneYearInMS = () => MS_PER_SEC * SECS_PER_MIN * MINS_PER_HOUR * HOU
 
 const getYear = timeInMS => new Date(timeInMS).getFullYear();
 
-const isNotUndefined = value => value !== undefined;
-
 // DATA HANDLING
 const dataHandler = (data, years) => tab => {
   return years
     .map(it => data.hasOwnProperty(tab) && data[tab][it])
-    .filter(isNotUndefined);
+    .filter(value => value !== undefined);
 };
 
 // GRAPH
