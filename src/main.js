@@ -1,5 +1,5 @@
 // CONSTANTS
-const MILLISECS_PER_SEC = 1000;
+const MS_PER_SEC = 1000;
 const SECS_PER_MIN = 60;
 const MINS_PER_HOUR = 60;
 const HOURS_PER_DAY = 24;
@@ -14,36 +14,38 @@ const Tabs = {
 };
 
 // UTILS
-const getLastYears = (currentTimeInMillisecs, numberOfYears) => {
+const getLastYears = (timeInMS, numberOfYears) => {
   return [...Array(numberOfYears)].map((it, i) => {
-    if (i === 0) return getYear(currentTimeInMillisecs);
+    if (i === 0) return getYear(timeInMS);
     else if (i > 0) {
-      const numberOfYearsInMillisecs = getOneYearInMillisecs() * i;
-      const timeInMillisecs = currentTimeInMillisecs - numberOfYearsInMillisecs;
-      return getYear(timeInMillisecs);
+      const yearsInMS = computeOneYearInMS() * i;
+      const t = timeInMS - yearsInMS;
+      return getYear(t);
     }
   });
 };
 
-const getYear = currentTimeInMillisecs => new Date(currentTimeInMillisecs).getFullYear();
+const computeOneYearInMS = () => MS_PER_SEC * SECS_PER_MIN * MINS_PER_HOUR * HOURS_PER_DAY * DAYS_PER_YEAR;
+
+const getYear = timeInMS => new Date(timeInMS).getFullYear();
+
+const startsWithDbQuote = str => str[0] === `"`;
+
+const endsWithDbQuote = str => str[str.length - 1] === `"`;
+
+const removeUndefined = arr => arr.filter(it => it !== undefined);
 
 // DATA HANDLING
-const getLastTenYearsData = (data, tab, years) => {
+const dataHandler = (data, years) => tab => {
   const orderedData = years.map(it => data.hasOwnProperty(tab) && data[tab][`${unwrapFromQuotes(it)}`]);
-  return cleanData(orderedData);
+  return removeUndefined(orderedData);
 };
-
-const getOneYearInMillisecs = () => MILLISECS_PER_SEC * SECS_PER_MIN * MINS_PER_HOUR * HOURS_PER_DAY * DAYS_PER_YEAR;
 
 const unwrapFromQuotes = entry => {
-  if (typeof entry === `number`) return entry;
-  if (typeof entry !== 'string') return;
+  if (typeof entry !== 'string') return entry;
   const it = entry.trim();
-  const quote = `"`;
-  if (it[0] === quote && it[it.length - 1] === quote) return it.slice(1, -1);
+  if (startsWithDbQuote(it) && endsWithDbQuote(it)) return it.slice(1, -1);
 };
-
-const cleanData = data => data.filter(it => it !== undefined);
 
 // GRAPH
 const margin = { top: 20, right: 40, bottom: 20, left: 50 };
@@ -102,8 +104,8 @@ const getYDomainExtent = data => {
   else return d3.extent(data, d => +d.value);
 };
 
-const update = (rawData, tab, years) => {
-  const data = getLastTenYearsData(rawData, tab, years);
+const update = (getTabData, tab) => {
+  const data = getTabData(tab);
 
   xScale.domain(years);
 
@@ -134,24 +136,24 @@ const update = (rawData, tab, years) => {
   d3.select(`#y-axis`).call(customYAxis);
 };
 
+// INITIAL CALL
+const years = getLastYears(Date.now(), 10).reverse();
+const getTabData = dataHandler(DUMMY_DATA_NEW, years);
+update(getTabData, `profit`);
+
 // EVENTS
 Tabs.profit.addEventListener(`click`, e => {
-  update(DUMMY_DATA_NEW, `profit`, years);
+  update(getTabData, `profit`);
 });
 
 Tabs.revenue.addEventListener(`click`, e => {
-  update(DUMMY_DATA_NEW, `revenue`, years);
+  update(getTabData, `revenue`);
 });
 
 Tabs.employee_count.addEventListener(`click`, e => {
-  update(DUMMY_DATA_NEW, `employee_count`, years);
+  update(getTabData, `employee_count`);
 });
 
 Tabs.taxes.addEventListener(`click`, e => {
-  update(DUMMY_DATA_NEW, `taxes`, years);
+  update(getTabData, `taxes`);
 });
-
-// INITIAL CALL
-const years = getLastYears(Date.now(), 10).reverse();
-update(DUMMY_DATA_NEW, `profit`, years);
-
