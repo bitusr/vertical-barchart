@@ -11,10 +11,10 @@ const TAB_TAXES = `taxes`;
 
 // DOM CONSTANTS
 const Tabs = {
-  profit: document.querySelector(`#tab-profit`),
-  revenue: document.querySelector(`#tab-revenue`),
-  employee_count: document.querySelector(`#tab-employees`),
-  taxes: document.querySelector(`#tab-taxes`)
+  [TAB_PROFIT]: document.querySelector(`#tab-profit`),
+  [TAB_REVENUE]: document.querySelector(`#tab-revenue`),
+  [TAB_EMPLOYEES]: document.querySelector(`#tab-employees`),
+  [TAB_TAXES]: document.querySelector(`#tab-taxes`)
 };
 
 // UTILS
