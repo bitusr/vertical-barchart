@@ -4,6 +4,10 @@ const SECS_PER_MIN = 60;
 const MINS_PER_HOUR = 60;
 const HOURS_PER_DAY = 24;
 const DAYS_PER_YEAR = 365;
+const TAB_PROFIT = `profit`;
+const TAB_REVENUE = `revenue`;
+const TAB_EMPLOYEES = `employee_count`;
+const TAB_TAXES = `taxes`;
 
 // DOM CONSTANTS
 const Tabs = {
@@ -143,21 +147,21 @@ const update = (getTabData, tab) => {
 // INITIAL CALL
 const years = getLastYears(Date.now(), 10).reverse();
 const getTabData = dataHandler(DUMMY_DATA, years);
-update(getTabData, `profit`);
+update(getTabData, TAB_PROFIT);
 
 // EVENTS
 Tabs.profit.addEventListener(`click`, e => {
-  update(getTabData, `profit`);
+  update(getTabData, TAB_PROFIT);
 });
 
 Tabs.revenue.addEventListener(`click`, e => {
-  update(getTabData, `revenue`);
+  update(getTabData, TAB_REVENUE);
 });
 
 Tabs.employee_count.addEventListener(`click`, e => {
-  update(getTabData, `employee_count`);
+  update(getTabData, TAB_EMPLOYEES);
 });
 
 Tabs.taxes.addEventListener(`click`, e => {
-  update(getTabData, `taxes`);
+  update(getTabData, TAB_TAXES);
 });
