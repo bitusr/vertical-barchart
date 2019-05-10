@@ -97,12 +97,18 @@ const customYAxis = g => {
     .attr(`dy`, 4)
 };
 
+const getYDomainExtent = data => {
+  if (d3.min(data, d => +d.value) >= 0) return [0, d3.max(data, d => +d.value)];
+  else return d3.extent(data, d => +d.value);
+};
+
 const update = (rawData, tab, years) => {
   const data = getLastTenYearsData(rawData, tab, years);
 
   xScale.domain(years);
 
-  yScale.domain(d3.extent(data, d => +d.value));
+  yScale.domain(getYDomainExtent(data));
+  console.log(getYDomainExtent(data))
 
   let bar = svg.selectAll(`.bar`)
     .data(data, d => d.value);
@@ -122,7 +128,6 @@ const update = (rawData, tab, years) => {
   bar = barEnter.merge(bar);
 
   bar.select(`.bar-rect`)
-    // .transition().duration(600)
     .attr(`height`, d => Math.abs(yScale(d.value) - yScale(0)));
 
   d3.select(`#x-axis`).call(customXAxis);

@@ -54,6 +54,12 @@ const DUMMY_DATA_NEW = {
       "value": -89,
       "unit": "USD",
       "source": "X"
+    },
+    "2019": {
+      "year": 2019,
+      "value": 0,
+      "unit": "USD",
+      "source": "X"
     }
   },
   "revenue": {
