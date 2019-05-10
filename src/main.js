@@ -21,10 +21,10 @@ const Tabs = {
 const getLastYears = (timeInMS, numberOfYears) => {
   return [...Array(numberOfYears)].map((it, i) => {
     if (i === 0) return getYear(timeInMS);
-    else if (i > 0) {
+    else {
       const yearsInMS = computeOneYearInMS() * i;
-      const t = timeInMS - yearsInMS;
-      return getYear(t);
+      const ms = timeInMS - yearsInMS;
+      return getYear(ms);
     }
   });
 };
@@ -33,26 +33,13 @@ const computeOneYearInMS = () => MS_PER_SEC * SECS_PER_MIN * MINS_PER_HOUR * HOU
 
 const getYear = timeInMS => new Date(timeInMS).getFullYear();
 
-const startsWithDbQuote = str => str[0] === `"`;
-
-const endsWithDbQuote = str => str[str.length - 1] === `"`;
-
-const isWrappedInDbQuotes = str => startsWithDbQuote(str) && endsWithDbQuote(str);
-
 const isNotUndefined = value => value !== undefined;
 
 // DATA HANDLING
 const dataHandler = (data, years) => tab => {
   return years
-    .map(it => data.hasOwnProperty(tab) && data[tab][`${unwrapFromQuotes(it)}`])
+    .map(it => data.hasOwnProperty(tab) && data[tab][it])
     .filter(isNotUndefined);
-};
-
-const unwrapFromQuotes = str => {
-  if (typeof str !== 'string') return str;
-  const trimmedStr = str.trim();
-  if (isWrappedInDbQuotes(trimmedStr)) return trimmedStr.slice(1, -1);
-  return str;
 };
 
 // GRAPH
