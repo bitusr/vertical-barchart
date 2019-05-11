@@ -48,11 +48,24 @@ body {
 .bar-rect {
   width: 32px;
   stroke-width: 2px;
-  stroke: darkorange;
-  fill: orange;
-  fill-opacity: 0.5;
 }
 
-.bar-rect:hover {
+.bar-rect--positive {
+  fill: orange;
+  fill-opacity: 0.5;
+  stroke: darkorange;
+}
+
+.bar-rect--positive:hover {
   fill: orangered;
+}
+
+.bar-rect--negative {
+  fill: red;
+  fill-opacity: 0.7;
+  stroke: rgb(250,128,114);
+}
+
+.bar-rect--negative:hover {
+  fill: darkred;
 }

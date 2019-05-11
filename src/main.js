@@ -82,7 +82,7 @@ const customXAxis = g => {
   g.call(xAxis)
     .select(`.domain`).remove();
 
-  g.selectAll(`.tick line`).remove()
+  g.selectAll(`.tick line`).remove();
 };
 
 const customYAxis = g => {
@@ -105,7 +105,7 @@ const update = (getTabData, tab) => {
   yScale.domain(getYDomainExtent(data));
 
   let bar = svg.selectAll(`.bar`)
-    .data(data, d => d.value);
+    .data(data, d => +d.value);
 
   bar.exit().remove();
 
@@ -115,14 +115,15 @@ const update = (getTabData, tab) => {
     .attr(`transform`, d => `translate(${xScale(+d.year)}, 0)`);
 
   barEnter.append(`rect`)
-    .attr(`class`, `bar-rect`)
-    .attr(`y`, d => d.value >= 0 ? yScale(d.value) : yScale(0))
-    .attr(`height`, d => Math.abs(yScale(d.value) - yScale(0)));
+    .attr(`class`, d => `bar-rect ${+d.value < 0 ? `bar-rect--negative` : `bar-rect--positive`}`)
+    .attr(`x`, 2)
+    .attr(`y`, d => +d.value >= 0 ? yScale(+d.value) : yScale(0))
+    .attr(`height`, d => Math.abs(yScale(+d.value) - yScale(0)));
 
   bar = barEnter.merge(bar);
 
   bar.select(`.bar-rect`)
-    .attr(`height`, d => Math.abs(yScale(d.value) - yScale(0)));
+    .attr(`height`, d => Math.abs(yScale(+d.value) - yScale(0)));
 
   d3.select(`#x-axis`).call(customXAxis);
 
