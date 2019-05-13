@@ -2,25 +2,25 @@ const DUMMY_DATA = {
   "profit": {
     "2015": {
       "year": 2015,
-      "value": 500,
+      "value": 5000000.00,
       "unit": "USD",
       "source": "X"
     },
     "2016": {
       "year": 2016,
-      "value": 400,
+      "value": 40000.00,
       "unit": "USD",
       "source": "X"
     },
     "2018": {
       "year": 2018,
-      "value": -89,
+      "value": -890000,
       "unit": "USD",
       "source": "X"
     },
     "2019": {
       "year": 2019,
-      "value": 0,
+      "value": -150000,
       "unit": "USD",
       "source": "X"
     }
@@ -28,13 +28,13 @@ const DUMMY_DATA = {
   "revenue": {
     "2016": {
       "year": 2016,
-      "value": 200,
+      "value": 2000000,
       "unit": "GBP",
       "source": "Y"
     },
     "2017": {
       "year": 2017,
-      "value": 250,
+      "value": 2500000,
       "unit": "GBP",
       "source": "Y"
     }

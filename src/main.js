@@ -76,7 +76,8 @@ svg.append(`g`)
 const xAxis = d3.axisBottom(xScale);
 
 const yAxis = d3.axisLeft(yScale)
-  .tickSize(-width);
+  .tickSize(-width)
+  .tickFormat(d3.format('.2s'));
 
 const customXAxis = g => {
   g.call(xAxis)
@@ -93,7 +94,7 @@ const customYAxis = g => {
     .attr(`stroke`, `#d8d8d8`);
 
   g.selectAll(`.tick text`)
-    .attr(`x`, -20)
+    .attr(`x`, -5)
     .attr(`dy`, 4)
 };
 
