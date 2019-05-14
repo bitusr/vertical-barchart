@@ -26,6 +26,11 @@ body {
   user-select: none;
 }
 
+.tab--selected {
+  border-bottom: 3px solid orangered;
+  color: orangered;
+}
+
 .tab:hover {
   border-bottom: 3px solid orangered;
   color: orangered;

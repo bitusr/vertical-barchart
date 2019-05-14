@@ -17,6 +17,8 @@ const Tabs = {
   [TAB_TAXES]: document.querySelector(`#tab-taxes`)
 };
 
+const TAB_ELEMENTS = document.querySelectorAll(`.tab`);
+
 // UTILS
 const getLastYears = (timeInMS, numberOfYears) => {
   return [...Array(numberOfYears)].map((it, i) => {
@@ -32,6 +34,8 @@ const getLastYears = (timeInMS, numberOfYears) => {
 const computeOneYearInMS = () => MS_PER_SEC * SECS_PER_MIN * MINS_PER_HOUR * HOURS_PER_DAY * DAYS_PER_YEAR;
 
 const getYear = timeInMS => new Date(timeInMS).getFullYear();
+
+const removeClass = (elements, className) => [...elements].forEach(it => it.classList.remove(className));
 
 // DATA HANDLING
 const dataHandler = (data, years) => tab => {
@@ -136,20 +140,31 @@ const update = (getTabData, tab) => {
 const years = getLastYears(Date.now(), 10).reverse();
 const getTabData = dataHandler(DUMMY_DATA, years);
 update(getTabData, TAB_PROFIT);
+// TODO refactor
+Tabs.profit.classList.add(`tab--selected`);
 
+// TODO refactor
 // EVENTS
 Tabs.profit.addEventListener(`click`, e => {
+  removeClass(TAB_ELEMENTS, `tab--selected`);
+  e.target.classList.add(`tab--selected`);
   update(getTabData, TAB_PROFIT);
 });
 
 Tabs.revenue.addEventListener(`click`, e => {
+  removeClass(TAB_ELEMENTS, `tab--selected`);
+  e.target.classList.add(`tab--selected`);
   update(getTabData, TAB_REVENUE);
 });
 
 Tabs.employee_count.addEventListener(`click`, e => {
+  removeClass(TAB_ELEMENTS, `tab--selected`);
+  e.target.classList.add(`tab--selected`);
   update(getTabData, TAB_EMPLOYEES);
 });
 
 Tabs.taxes.addEventListener(`click`, e => {
+  removeClass(TAB_ELEMENTS, `tab--selected`);
+  e.target.classList.add(`tab--selected`);
   update(getTabData, TAB_TAXES);
 });
