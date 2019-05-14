@@ -79,9 +79,13 @@ svg.append(`g`)
 
 const xAxis = d3.axisBottom(xScale);
 
+const formatTicks = d => d3.format('.2s')(d)
+  .replace(`M`, `Mio`)
+  .replace(`G`, `B`);
+
 const yAxis = d3.axisLeft(yScale)
   .tickSize(-width)
-  .tickFormat(d3.format('.2s'));
+  .tickFormat(formatTicks);
 
 const customXAxis = g => {
   g.call(xAxis)
