@@ -1,17 +1,24 @@
 # Vertical bar chart
 
-##  Description
-One bar chart with 4 tabs. 
-Switching a tab means to switch **y** axis.
-There can be less than 10 years rendered. 
-If less years rendered, then the bars should be centered.
-If there is no data for a year, then the bar changes color 
-to grey and the text inside the bar says *No data*.
-
 ## Axes and Bars
-- **x** - `years`
-- **y** - `money`: profit, revenue, taxes. `number`: employees
-- Number of years rendered: 10 or less
+- **X axis** is years
+- **Y axis** can be following values:
+    - *money* for profit, revenue and taxes tabs.
+    - *number* for employees tab.
+
+## Features
+- handles data with only positive values
+- handles data with only negative values
+- handles data with both negative and positive values
+- has 4 tabs
+- switches **Y axis** on tab click
+
+## Not yet implemented
+- number of years rendered on the **X axis** can be 10 or less
+- if less than 10 years rendered - the bars should be centered
+- if there is no data for a year:
+    - the bar fills the space and changes color to gray
+    - text inside the bar says **No data**
 
 ## Tab values
 - Profit
