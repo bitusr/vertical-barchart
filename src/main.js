@@ -119,6 +119,7 @@ const update = (getTabData, tab) => {
     .attr(`class`, d => `bar-rect ${+d.value < 0 ? `bar-rect--negative` : `bar-rect--positive`}`)
     .attr(`x`, 2)
     .attr(`y`, d => +d.value >= 0 ? yScale(+d.value) : yScale(0))
+    .attr(`width`, 32) // hack for FF
     .attr(`height`, d => Math.abs(yScale(+d.value) - yScale(0)));
 
   bar = barEnter.merge(bar);
