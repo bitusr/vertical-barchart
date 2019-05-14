@@ -66,7 +66,8 @@ const yScale = d3.scaleLinear()
 
 const getYDomainExtent = data => {
   if (d3.min(data, d => +d.value) >= 0) return [0, d3.max(data, d => +d.value)];
-  else return d3.extent(data, d => +d.value);
+  if (d3.max(data, d => +d.value) < 0) return [d3.min(data, d => +d.value), 0];
+  return d3.extent(data, d => +d.value);
 };
 
 // AXIS

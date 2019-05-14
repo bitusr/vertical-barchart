@@ -34,13 +34,13 @@ const DUMMY_DATA = {
   "revenue": {
     "2016": {
       "year": 2016,
-      "value": 2000000,
+      "value": -2000000,
       "unit": "GBP",
       "source": "Y"
     },
     "2017": {
       "year": 2017,
-      "value": 2500000,
+      "value": -2500000,
       "unit": "GBP",
       "source": "Y"
     }
