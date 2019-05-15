@@ -51,20 +51,6 @@ const DUMMY_DATA = {
       "source": "Y"
     }
   },
-  "taxes": {
-    "2016": {
-      "year": 2016,
-      "value": 80,
-      "unit": "EUR",
-      "source": "Y"
-    },
-    "2018": {
-      "year": 2018,
-      "value": 36,
-      "unit": "EUR",
-      "source": "Y"
-    },
-  },
   "employee_count": {
     "2017": {
       "year": 2017,
@@ -83,6 +69,20 @@ const DUMMY_DATA = {
       "value": 990,
       "unit": "",
       "source": "Z"
+    },
+  },
+  "taxes": {
+    "2016": {
+      "year": 2016,
+      "value": 80,
+      "unit": "EUR",
+      "source": "Y"
+    },
+    "2018": {
+      "year": 2018,
+      "value": 36,
+      "unit": "EUR",
+      "source": "Y"
     },
   },
 };

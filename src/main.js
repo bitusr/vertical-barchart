@@ -1,9 +1,4 @@
 // CONSTANTS
-const MS_PER_SEC = 1000;
-const SECS_PER_MIN = 60;
-const MINS_PER_HOUR = 60;
-const HOURS_PER_DAY = 24;
-const DAYS_PER_YEAR = 365;
 const TAB_PROFIT = `profit`;
 const TAB_REVENUE = `revenue`;
 const TAB_EMPLOYEES = `employee_count`;
@@ -20,22 +15,24 @@ const Tabs = {
 const TAB_ELEMENTS = document.querySelectorAll(`.tab`);
 
 // UTILS
-const getLastYears = (timeInMS, numberOfYears) => {
-  return [...Array(numberOfYears)].map((it, i) => {
-    if (i === 0) return getYear(timeInMS);
-    else {
-      const yearsInMS = computeOneYearInMS() * i;
-      const ms = timeInMS - yearsInMS;
-      return getYear(ms);
-    }
-  });
+const getLastYears = (date, numberOfYears) => {
+  const lastYear = getYear(date);
+  return [...Array(numberOfYears)].map((it, i) => i === 0 ? lastYear : lastYear - i);
 };
-
-const computeOneYearInMS = () => MS_PER_SEC * SECS_PER_MIN * MINS_PER_HOUR * HOURS_PER_DAY * DAYS_PER_YEAR;
 
 const getYear = timeInMS => new Date(timeInMS).getFullYear();
 
 const removeClass = (elements, className) => [...elements].forEach(it => it.classList.remove(className));
+
+const clampToNumOrLowerBound = (val, minBound) => val > minBound ? val : minBound;
+
+const clampToNumOrUpperBound = (val, maxBound) => val < maxBound ? val : maxBound;
+
+const buildArrayOfIntsWithin = (min, max) => {
+  const numberToIncludeMaxValue = 1;
+  const amount = max - min + numberToIncludeMaxValue;
+  return [...Array(amount)].map((it, i) => min + i);
+};
 
 // DATA HANDLING
 const dataHandler = (data, years) => tab => {
@@ -62,39 +59,22 @@ const xScale = d3.scaleBand()
   .range([0, width])
   .padding(0.5);
 
-const buildArrayOfIntsWithinExtent = (min, max) => {
-  const numberToIncludeMaxValue = 1;
-  const amount = max - min + numberToIncludeMaxValue;
-  return [...Array(amount)].map((it, i) => min + i);
-};
-
-const computeOldestYear = (data, allowedLastYears) => {
-  const dataOldestYear = d3.min(data, d => +d.year);
-  const oldestYearAllowed = d3.min(allowedLastYears);
-  if (dataOldestYear > oldestYearAllowed) return dataOldestYear;
-  return oldestYearAllowed;
-};
-
-const computeNewestYear = (data, allowedLastYears) => {
-  const dataNewestYear = d3.max(data, d => +d.year);
-  const newestYearAllowed = d3.max(allowedLastYears);
-  if (dataNewestYear < newestYearAllowed) return dataNewestYear;
-  return newestYearAllowed;
-};
-
 const getXDomainValues = (data, allowedLastYears) => {
-  const oldestYear = computeOldestYear(data, allowedLastYears);
-  const newestYear = computeNewestYear(data, allowedLastYears);
-  return buildArrayOfIntsWithinExtent(oldestYear, newestYear);
+  const dataYearsExtent = d3.extent(data, d => +d.year);
+  const allowedYearsExtent = d3.extent(allowedLastYears);
+  const allowedOldestYear = clampToNumOrLowerBound(dataYearsExtent[0], allowedYearsExtent[0]);
+  const allowedNewestYear = clampToNumOrUpperBound(dataYearsExtent[1], allowedYearsExtent[1]);
+  return buildArrayOfIntsWithin(allowedOldestYear, allowedNewestYear);
 };
 
 const yScale = d3.scaleLinear()
   .range([height, 0]);
 
 const getYDomainExtent = data => {
-  if (d3.min(data, d => +d.value) >= 0) return [0, d3.max(data, d => +d.value)];
-  if (d3.max(data, d => +d.value) < 0) return [d3.min(data, d => +d.value), 0];
-  return d3.extent(data, d => +d.value);
+  const [min, max] = d3.extent(data, d => +d.value);
+  if (min >= 0) return [0, max];
+  if (max <= 0) return [min, 0];
+  return [min, max];
 };
 
 // AXIS
