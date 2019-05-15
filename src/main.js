@@ -20,7 +20,7 @@ const getLastYears = (date, numberOfYears) => {
   return [...Array(numberOfYears)].map((it, i) => i === 0 ? lastYear : lastYear - i);
 };
 
-const getYear = timeInMS => new Date(timeInMS).getFullYear();
+const getYear = date => new Date(date).getFullYear();
 
 const removeClass = (elements, className) => [...elements].forEach(it => it.classList.remove(className));
 
@@ -46,6 +46,7 @@ const margin = { top: 20, right: 0, bottom: 20, left: 50 };
 const width = 860 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 const barWidth = 32;
+const lastTenYears = getLastYears(Date.now(), 10).reverse();
 
 const svg = d3.select(`#wrapper`)
   .append(`svg`)
@@ -117,7 +118,7 @@ const customYAxis = g => {
 const update = (getTabData, tab) => {
   const data = getTabData(tab);
 
-  xScale.domain(getXDomainValues(data, years));
+  xScale.domain(getXDomainValues(data, lastTenYears));
 
   yScale.domain(getYDomainExtent(data));
 
@@ -153,8 +154,7 @@ const update = (getTabData, tab) => {
 };
 
 // INITIAL CALL
-const years = getLastYears(Date.now(), 10).reverse();
-const getTabData = dataHandler(DUMMY_DATA, years);
+const getTabData = dataHandler(DUMMY_DATA, lastTenYears);
 update(getTabData, TAB_PROFIT);
 // TODO refactor
 Tabs.profit.classList.add(`tab--selected`);
