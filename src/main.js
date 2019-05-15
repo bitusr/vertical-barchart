@@ -45,7 +45,7 @@ const dataHandler = (data, years) => tab => {
 };
 
 // GRAPH
-const margin = { top: 20, right: 40, bottom: 20, left: 50 };
+const margin = { top: 20, right: 0, bottom: 20, left: 50 };
 const width = 860 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 
@@ -58,8 +58,8 @@ const svg = d3.select(`#wrapper`)
 
 // SCALES
 const xScale = d3.scaleBand()
-  .range([0, width])
-  .padding(0.5);
+  .range([margin.left, width])
+  .padding(0.6);
 
 const yScale = d3.scaleLinear()
   .range([height, 0]);
@@ -107,10 +107,36 @@ const customYAxis = g => {
     .attr(`dy`, 4)
 };
 
+const buildArrayOfIntsWithinExtent = (min, max) => {
+  const numberToIncludeMaxValue = 1;
+  const amount = max - min + numberToIncludeMaxValue;
+  return [...Array(amount)].map((it, i) => min + i);
+};
+
+const computeOldestYear = (data, allowedLastYears) => {
+  const dataOldestYear = d3.min(data, d => +d.year);
+  const oldestYearAllowed = d3.min(allowedLastYears);
+  if (dataOldestYear > oldestYearAllowed) return dataOldestYear;
+  return oldestYearAllowed;
+};
+
+const computeNewestYear = (data, allowedLastYears) => {
+  const dataNewestYear = d3.max(data, d => +d.year);
+  const newestYearAllowed = d3.max(allowedLastYears);
+  if (dataNewestYear < newestYearAllowed) return dataNewestYear;
+  return newestYearAllowed;
+};
+
+const getXDomainExtent = (data, allowedLastYears) => {
+  const oldestYear = computeOldestYear(data, allowedLastYears);
+  const newestYear = computeNewestYear(data, allowedLastYears);
+  return buildArrayOfIntsWithinExtent(oldestYear, newestYear);
+};
+
 const update = (getTabData, tab) => {
   const data = getTabData(tab);
 
-  xScale.domain(years);
+  xScale.domain(getXDomainExtent(data, years));
 
   yScale.domain(getYDomainExtent(data));
 
