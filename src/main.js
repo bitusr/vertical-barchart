@@ -62,6 +62,32 @@ const xScale = d3.scaleBand()
   .range([0, width])
   .padding(0.5);
 
+const buildArrayOfIntsWithinExtent = (min, max) => {
+  const numberToIncludeMaxValue = 1;
+  const amount = max - min + numberToIncludeMaxValue;
+  return [...Array(amount)].map((it, i) => min + i);
+};
+
+const computeOldestYear = (data, allowedLastYears) => {
+  const dataOldestYear = d3.min(data, d => +d.year);
+  const oldestYearAllowed = d3.min(allowedLastYears);
+  if (dataOldestYear > oldestYearAllowed) return dataOldestYear;
+  return oldestYearAllowed;
+};
+
+const computeNewestYear = (data, allowedLastYears) => {
+  const dataNewestYear = d3.max(data, d => +d.year);
+  const newestYearAllowed = d3.max(allowedLastYears);
+  if (dataNewestYear < newestYearAllowed) return dataNewestYear;
+  return newestYearAllowed;
+};
+
+const getXDomainValues = (data, allowedLastYears) => {
+  const oldestYear = computeOldestYear(data, allowedLastYears);
+  const newestYear = computeNewestYear(data, allowedLastYears);
+  return buildArrayOfIntsWithinExtent(oldestYear, newestYear);
+};
+
 const yScale = d3.scaleLinear()
   .range([height, 0]);
 
@@ -108,36 +134,10 @@ const customYAxis = g => {
     .attr(`dy`, 4)
 };
 
-const buildArrayOfIntsWithinExtent = (min, max) => {
-  const numberToIncludeMaxValue = 1;
-  const amount = max - min + numberToIncludeMaxValue;
-  return [...Array(amount)].map((it, i) => min + i);
-};
-
-const computeOldestYear = (data, allowedLastYears) => {
-  const dataOldestYear = d3.min(data, d => +d.year);
-  const oldestYearAllowed = d3.min(allowedLastYears);
-  if (dataOldestYear > oldestYearAllowed) return dataOldestYear;
-  return oldestYearAllowed;
-};
-
-const computeNewestYear = (data, allowedLastYears) => {
-  const dataNewestYear = d3.max(data, d => +d.year);
-  const newestYearAllowed = d3.max(allowedLastYears);
-  if (dataNewestYear < newestYearAllowed) return dataNewestYear;
-  return newestYearAllowed;
-};
-
-const getXDomainExtent = (data, allowedLastYears) => {
-  const oldestYear = computeOldestYear(data, allowedLastYears);
-  const newestYear = computeNewestYear(data, allowedLastYears);
-  return buildArrayOfIntsWithinExtent(oldestYear, newestYear);
-};
-
 const update = (getTabData, tab) => {
   const data = getTabData(tab);
 
-  xScale.domain(getXDomainExtent(data, years));
+  xScale.domain(getXDomainValues(data, years));
 
   yScale.domain(getYDomainExtent(data));
 
