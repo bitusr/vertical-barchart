@@ -48,6 +48,7 @@ const dataHandler = (data, years) => tab => {
 const margin = { top: 20, right: 0, bottom: 20, left: 50 };
 const width = 860 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
+const barWidth = 32;
 
 const svg = d3.select(`#wrapper`)
   .append(`svg`)
@@ -58,8 +59,8 @@ const svg = d3.select(`#wrapper`)
 
 // SCALES
 const xScale = d3.scaleBand()
-  .range([margin.left, width])
-  .padding(0.6);
+  .range([0, width])
+  .padding(0.5);
 
 const yScale = d3.scaleLinear()
   .range([height, 0]);
@@ -148,13 +149,17 @@ const update = (getTabData, tab) => {
   const barEnter = bar.enter()
     .append(`g`)
     .attr(`class`, `bar`)
-    .attr(`transform`, d => `translate(${xScale(+d.year)}, 0)`);
+    .attr(`transform`, d => {
+      const halfBarWidth = barWidth / 2;
+      const halfBandWidth = xScale.bandwidth() / 2;
+      const xStartingPointForBar = xScale(+d.year) + halfBandWidth - halfBarWidth;
+      return `translate(${xStartingPointForBar}, 0)`
+    });
 
   barEnter.append(`rect`)
     .attr(`class`, d => `bar-rect ${+d.value < 0 ? `bar-rect--negative` : `bar-rect--positive`}`)
-    .attr(`x`, 2)
     .attr(`y`, d => +d.value >= 0 ? yScale(+d.value) : yScale(0))
-    .attr(`width`, 32) // hack for FF
+    .attr(`width`, barWidth) // hack for FF
     .attr(`height`, d => Math.abs(yScale(+d.value) - yScale(0)));
 
   bar = barEnter.merge(bar);
