@@ -2,6 +2,10 @@ body {
   font-family: sans-serif;
 }
 
+.visibilityHidden {
+  visibility: hidden;
+}
+
 .graph-container {
   display: flex;
   flex-direction: column;

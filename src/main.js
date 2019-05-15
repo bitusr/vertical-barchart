@@ -98,14 +98,17 @@ const yAxis = d3.axisLeft(yScale)
 
 const customXAxis = g => {
   g.call(xAxis)
-    .select(`.domain`).remove();
+    .select(`.domain`)
+    .attr(`class`, `visibilityHidden`);
 
-  g.selectAll(`.tick line`).remove();
+  g.selectAll(`.tick line`)
+    .attr(`class`, `visibilityHidden`);
 };
 
 const customYAxis = g => {
   g.call(yAxis)
-    .select(`.domain`).remove();
+    .select(`.domain`)
+    .attr(`class`, `visibilityHidden`);
 
   g.selectAll(`.tick line`)
     .attr(`stroke`, `#d8d8d8`);
