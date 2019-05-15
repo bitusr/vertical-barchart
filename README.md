@@ -1,4 +1,4 @@
-# Vertical bar chart
+# Vertical dynamic bar chart
 
 ## Axes and Bars
 - **X axis** is years
@@ -12,10 +12,9 @@
 - handles data with both negative and positive values
 - has 4 tabs
 - switches **Y axis** on tab click
+- number of years rendered on the **X axis** can be 10 or less
 
 ## Not yet implemented
-- number of years rendered on the **X axis** can be 10 or less
-- if less than 10 years rendered - the bars should be centered
 - if there is no data for a year:
     - the bar fills the space and changes color to gray
     - text inside the bar says **No data**
