@@ -72,14 +72,14 @@ const DUMMY_DATA = {
     },
   },
   "taxes": {
-    "2016": {
-      "year": 2016,
+    "2006": {
+      "year": 2006,
       "value": 80,
       "unit": "EUR",
       "source": "Y"
     },
-    "2018": {
-      "year": 2018,
+    "2008": {
+      "year": 2008,
       "value": 36,
       "unit": "EUR",
       "source": "Y"
