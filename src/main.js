@@ -24,9 +24,9 @@ const getYear = date => new Date(date).getFullYear();
 
 const removeClass = (elements, className) => [...elements].forEach(it => it.classList.remove(className));
 
-const clampToNumOrLowerBound = (val, minBound) => val > minBound ? val : minBound;
+const clampToValOrLowerBound = (val, minBound) => val > minBound ? val : minBound;
 
-const clampToNumOrUpperBound = (val, maxBound) => val < maxBound ? val : maxBound;
+const clampToValOrUpperBound = (val, maxBound) => val < maxBound ? val : maxBound;
 
 const buildArrayOfIntsWithin = (min, max) => {
   const numberToIncludeMaxValue = 1;
@@ -63,8 +63,8 @@ const xScale = d3.scaleBand()
 const getXDomainValues = (data, allowedLastYears) => {
   const [min, max] = d3.extent(data, d => +d.year);
   const [minBound, maxBound] = d3.extent(allowedLastYears);
-  const oldestYearAllowed = clampToNumOrLowerBound(min, minBound);
-  const newestYearAllowed = clampToNumOrUpperBound(max, maxBound);
+  const oldestYearAllowed = clampToValOrLowerBound(min, minBound);
+  const newestYearAllowed = clampToValOrUpperBound(max, maxBound);
   return buildArrayOfIntsWithin(oldestYearAllowed, newestYearAllowed);
 };
 
