@@ -61,11 +61,11 @@ const xScale = d3.scaleBand()
   .padding(0.5);
 
 const getXDomainValues = (data, allowedLastYears) => {
-  const dataYearsExtent = d3.extent(data, d => +d.year);
-  const allowedYearsExtent = d3.extent(allowedLastYears);
-  const allowedOldestYear = clampToNumOrLowerBound(dataYearsExtent[0], allowedYearsExtent[0]);
-  const allowedNewestYear = clampToNumOrUpperBound(dataYearsExtent[1], allowedYearsExtent[1]);
-  return buildArrayOfIntsWithin(allowedOldestYear, allowedNewestYear);
+  const [min, max] = d3.extent(data, d => +d.year);
+  const [minBound, maxBound] = d3.extent(allowedLastYears);
+  const oldestYearAllowed = clampToNumOrLowerBound(min, minBound);
+  const newestYearAllowed = clampToNumOrUpperBound(max, maxBound);
+  return buildArrayOfIntsWithin(oldestYearAllowed, newestYearAllowed);
 };
 
 const yScale = d3.scaleLinear()
