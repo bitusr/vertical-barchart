@@ -7,17 +7,14 @@
     - *number* for employees tab.
 
 ## Features
+- supports Chrome, FF, IE11
 - handles data with only positive values
 - handles data with only negative values
 - handles data with both negative and positive values
 - has 4 tabs
 - switches **Y axis** on tab click
 - number of years rendered on the **X axis** can be 10 or less
-
-## Not yet implemented
-- if there is no data for a year:
-    - the bar fills the space and changes color to gray
-    - text inside the bar says **No data**
+- if there is no data for some allowed year, the year label greys out
 
 ## Tab values
 - Profit

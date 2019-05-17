@@ -6,6 +6,10 @@ body {
   visibility: hidden;
 }
 
+.no-data {
+  fill: lightgrey;
+}
+
 .graph-container {
   display: flex;
   flex-direction: column;

@@ -28,17 +28,17 @@ const clampToValOrLowerBound = (val, minBound) => val > minBound ? val : minBoun
 
 const clampToValOrUpperBound = (val, maxBound) => val < maxBound ? val : maxBound;
 
-const buildArrayOfIntsWithin = (min, max) => {
+const buildArrayOfIntsWithin = ([min, max]) => {
   const numberToIncludeMaxValue = 1;
   const amount = max - min + numberToIncludeMaxValue;
   return [...Array(amount)].map((it, i) => min + i);
 };
 
-// DATA HANDLING
-const dataHandler = (data, years) => tab => {
-  return years
-    .map(it => data.hasOwnProperty(tab) && data[tab][it])
-    .filter(value => value !== undefined);
+const getValsWithinExtentOrBounds = ([min, max], [minBound, maxBound]) => {
+  const minAllowed = clampToValOrLowerBound(min, minBound);
+  const maxAllowed = clampToValOrUpperBound(max, maxBound);
+  if (minAllowed > maxAllowed) return buildArrayOfIntsWithin([minBound, maxBound]);
+  return buildArrayOfIntsWithin([minAllowed, maxAllowed]);
 };
 
 // GRAPH
@@ -60,19 +60,10 @@ const xScale = d3.scaleBand()
   .range([0, width])
   .padding(0.5);
 
-const getXDomainValues = (data, allowedLastYears) => {
-  const [min, max] = d3.extent(data, d => +d.year);
-  const [minBound, maxBound] = d3.extent(allowedLastYears);
-  const oldestYearAllowed = clampToValOrLowerBound(min, minBound);
-  const newestYearAllowed = clampToValOrUpperBound(max, maxBound);
-  return buildArrayOfIntsWithin(oldestYearAllowed, newestYearAllowed);
-};
-
 const yScale = d3.scaleLinear()
   .range([height, 0]);
 
-const getYDomainExtent = data => {
-  const [min, max] = d3.extent(data, d => +d.value);
+const getYDomainExtent = ([min, max]) => {
   if (min >= 0) return [0, max];
   if (max <= 0) return [min, 0];
   return [min, max];
@@ -96,34 +87,17 @@ const yAxis = d3.axisLeft(yScale)
   .tickSize(-width)
   .tickFormat(formatTicks);
 
-const customXAxis = g => {
-  g.call(xAxis)
-    .select(`.domain`)
-    .attr(`class`, `visibilityHidden`);
 
-  g.selectAll(`.tick line`)
-    .attr(`class`, `visibilityHidden`);
-};
 
-const customYAxis = g => {
-  g.call(yAxis)
-    .select(`.domain`)
-    .attr(`class`, `visibilityHidden`);
+const update = (data) => {
+  const yearsExtent = d3.extent(data, d => +d.year);
+  const amountExtent = d3.extent(data, d => +d.value);
+  const valsWithinExtentOrBounds = getValsWithinExtentOrBounds(yearsExtent, allowedExtent);
+  const noDataYears = getNoDataYears(data, valsWithinExtentOrBounds);
 
-  g.selectAll(`.tick line`)
-    .attr(`stroke`, `#d8d8d8`);
+  xScale.domain(valsWithinExtentOrBounds);
 
-  g.selectAll(`.tick text`)
-    .attr(`x`, -5)
-    .attr(`dy`, 4)
-};
-
-const update = (getTabData, tab) => {
-  const data = getTabData(tab);
-
-  xScale.domain(getXDomainValues(data, lastTenYears));
-
-  yScale.domain(getYDomainExtent(data));
+  yScale.domain(getYDomainExtent(amountExtent));
 
   let bar = svg.selectAll(`.bar`)
     .data(data, d => +d.value);
@@ -151,14 +125,69 @@ const update = (getTabData, tab) => {
   bar.select(`.bar-rect`)
     .attr(`height`, d => Math.abs(yScale(+d.value) - yScale(0)));
 
+  const customXAxis = g => {
+    g.call(xAxis)
+      .select(`.domain`)
+      .attr(`class`, `visibilityHidden`);
+
+    g.selectAll(`.tick line`)
+      .attr(`class`, `visibilityHidden`);
+
+    g.selectAll(`.tick text`)
+      .attr(`class`, d => noDataYears.includes(d) ? `no-data` : ``);
+  };
+
+  const customYAxis = g => {
+    g.call(yAxis)
+      .select(`.domain`)
+      .attr(`class`, `visibilityHidden`);
+
+    g.selectAll(`.tick line`)
+      .attr(`stroke`, `#d8d8d8`);
+
+    g.selectAll(`.tick text`)
+      .attr(`x`, -5)
+      .attr(`dy`, 4);
+  };
+
   d3.select(`#x-axis`).call(customXAxis);
 
   d3.select(`#y-axis`).call(customYAxis);
 };
 
+// DATA HANDLING
+const allowedExtent = d3.extent(lastTenYears);
+
+const getNoDataYears = (dataYears, allowedYears) => {
+  const copy = [...allowedYears];
+  dataYears.forEach(it => {
+    const index = copy.indexOf(it.year);
+    if (index !== -1) copy.splice(index, 1);
+  });
+  return copy;
+};
+
+const dataGenerator = data => tab => {
+  const tabData = Object.keys(data[tab]);
+  const extent = d3.extent(tabData, d => +d);
+  const allowedYears = getValsWithinExtentOrBounds(extent, allowedExtent);
+  //
+  // const dataWithinBounds = allowedYears.map(it => data.hasOwnProperty(tab) && data[tab][it]);
+  // const trimmedFromUndefinedData = trimUndefinedFromArray(dataWithinBounds);
+  // console.log(dataWithinBounds, `ORIGIN`);
+  // console.log(trimmedFromUndefinedData, `trimmedFromUndefinedData`);
+
+
+  return allowedYears
+    .map(it => data.hasOwnProperty(tab) && data[tab][it])
+    .filter(it => it !== undefined);
+};
+
 // INITIAL CALL
-const getTabData = dataHandler(DUMMY_DATA, lastTenYears);
-update(getTabData, TAB_PROFIT);
+const getTabData = dataGenerator(DUMMY_DATA);
+const data = getTabData(TAB_PROFIT);
+update(data);
+
 // TODO refactor
 Tabs.profit.classList.add(`tab--selected`);
 
@@ -167,23 +196,27 @@ Tabs.profit.classList.add(`tab--selected`);
 Tabs.profit.addEventListener(`click`, e => {
   removeClass(TAB_ELEMENTS, `tab--selected`);
   e.target.classList.add(`tab--selected`);
-  update(getTabData, TAB_PROFIT);
+  const data = getTabData(TAB_PROFIT);
+  update(data);
 });
 
 Tabs.revenue.addEventListener(`click`, e => {
   removeClass(TAB_ELEMENTS, `tab--selected`);
   e.target.classList.add(`tab--selected`);
-  update(getTabData, TAB_REVENUE);
+  const data = getTabData(TAB_REVENUE);
+  update(data);
 });
 
 Tabs.employee_count.addEventListener(`click`, e => {
   removeClass(TAB_ELEMENTS, `tab--selected`);
   e.target.classList.add(`tab--selected`);
-  update(getTabData, TAB_EMPLOYEES);
+  const data = getTabData(TAB_EMPLOYEES);
+  update(data);
 });
 
 Tabs.taxes.addEventListener(`click`, e => {
   removeClass(TAB_ELEMENTS, `tab--selected`);
   e.target.classList.add(`tab--selected`);
-  update(getTabData, TAB_TAXES);
+  const data = getTabData(TAB_TAXES);
+  update(data);
 });
