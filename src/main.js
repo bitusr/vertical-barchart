@@ -87,8 +87,6 @@ const yAxis = d3.axisLeft(yScale)
   .tickSize(-width)
   .tickFormat(formatTicks);
 
-
-
 const update = (data) => {
   const yearsExtent = d3.extent(data, d => +d.year);
   const amountExtent = d3.extent(data, d => +d.value);
@@ -171,13 +169,6 @@ const dataGenerator = data => tab => {
   const tabData = Object.keys(data[tab]);
   const extent = d3.extent(tabData, d => +d);
   const allowedYears = getValsWithinExtentOrBounds(extent, allowedExtent);
-  //
-  // const dataWithinBounds = allowedYears.map(it => data.hasOwnProperty(tab) && data[tab][it]);
-  // const trimmedFromUndefinedData = trimUndefinedFromArray(dataWithinBounds);
-  // console.log(dataWithinBounds, `ORIGIN`);
-  // console.log(trimmedFromUndefinedData, `trimmedFromUndefinedData`);
-
-
   return allowedYears
     .map(it => data.hasOwnProperty(tab) && data[tab][it])
     .filter(it => it !== undefined);
