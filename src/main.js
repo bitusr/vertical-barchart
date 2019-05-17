@@ -15,7 +15,7 @@ const Tabs = {
 const TAB_ELEMENTS = document.querySelectorAll(`.tab`);
 
 // UTILS
-const getLastYears = (date, numberOfYears) => {
+const getNumberOfYearsPriorTo = (date, numberOfYears) => {
   const lastYear = getYear(date);
   return [...Array(numberOfYears)].map((it, i) => i === 0 ? lastYear : lastYear - i);
 };
@@ -46,7 +46,7 @@ const margin = { top: 20, right: 0, bottom: 20, left: 50 };
 const width = 860 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 const barWidth = 32;
-const lastTenYears = getLastYears(Date.now(), 10).reverse();
+const lastTenYears = getNumberOfYearsPriorTo(Date.now(), 10).reverse();
 
 const svg = d3.select(`#wrapper`)
   .append(`svg`)
