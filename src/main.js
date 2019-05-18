@@ -16,11 +16,9 @@ const TAB_ELEMENTS = document.querySelectorAll(`.tab`);
 
 // UTILS
 const getNumberOfYearsPriorTo = (date, numberOfYears) => {
-  const lastYear = getYear(date);
+  const lastYear = new Date(date).getFullYear();
   return [...Array(numberOfYears)].map((it, i) => i === 0 ? lastYear : lastYear - i);
 };
-
-const getYear = date => new Date(date).getFullYear();
 
 const removeClass = (elements, className) => [...elements].forEach(it => it.classList.remove(className));
 
