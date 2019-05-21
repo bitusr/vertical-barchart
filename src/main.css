@@ -81,3 +81,9 @@ body {
 .bar-rect--negative:hover {
   fill: darkred;
 }
+
+.bar-text {
+  font-size: 10px;
+  fill: grey;
+  text-align: center;
+}

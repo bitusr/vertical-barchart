@@ -40,7 +40,7 @@ const getValsWithinExtentOrBounds = ([min, max], [minBound, maxBound]) => {
 };
 
 // GRAPH
-const margin = { top: 20, right: 0, bottom: 20, left: 50 };
+const margin = { top: 20, right: 0, bottom: 30, left: 50 };
 const width = 860 - margin.left - margin.right;
 const height = 400 - margin.top - margin.bottom;
 const barWidth = 32;
@@ -77,13 +77,14 @@ svg.append(`g`)
 
 const xAxis = d3.axisBottom(xScale);
 
-const formatTicks = d => d3.format('.2s')(d)
+const formatNumber = d => d3.format('.2s')(d)
+  .replace(`k`, `K`)
   .replace(`M`, `Mio`)
   .replace(`G`, `B`);
 
 const yAxis = d3.axisLeft(yScale)
   .tickSize(-width)
-  .tickFormat(formatTicks);
+  .tickFormat(formatNumber);
 
 const update = (data) => {
   const yearsExtent = d3.extent(data, d => +d.year);
@@ -103,23 +104,31 @@ const update = (data) => {
   const barEnter = bar.enter()
     .append(`g`)
     .attr(`class`, `bar`)
-    .attr(`transform`, d => {
+    .attr(`transform`, ({ year }) => {
       const halfBarWidth = barWidth / 2;
       const halfBandWidth = xScale.bandwidth() / 2;
-      const xStartingPointForBar = xScale(+d.year) + halfBandWidth - halfBarWidth;
+      const xStartingPointForBar = xScale(+year) + halfBandWidth - halfBarWidth;
       return `translate(${xStartingPointForBar}, 0)`
     });
 
   barEnter.append(`rect`)
     .attr(`class`, d => `bar-rect ${+d.value < 0 ? `bar-rect--negative` : `bar-rect--positive`}`)
-    .attr(`y`, d => +d.value >= 0 ? yScale(+d.value) : yScale(0))
+    .attr(`y`, ({ value }) => +value >= 0 ? yScale(+value) : yScale(0))
     .attr(`width`, barWidth) // hack for FF
-    .attr(`height`, d => Math.abs(yScale(+d.value) - yScale(0)));
+    .attr(`height`, ({ value }) => Math.abs(yScale(+value) - yScale(0)));
+
+  barEnter
+    .append(`text`)
+    .attr(`class`, ({ value }) => `bar-text ${+value < 0 ? `bar-text--negative` : `bar-text--positive`}`)
+    .attr(`y`, ({ value }) => +value >= 0 ? yScale(+value) - 5 : yScale(+value) + 12)
+    .attr(`x`, barWidth / 2)
+    .attr(`text-anchor`, `middle`)
+    .text(({ value }) => formatNumber(+value));
 
   bar = barEnter.merge(bar);
 
   bar.select(`.bar-rect`)
-    .attr(`height`, d => Math.abs(yScale(+d.value) - yScale(0)));
+    .attr(`height`, ({ value }) => Math.abs(yScale(+value) - yScale(0)));
 
   const customXAxis = g => {
     g.call(xAxis)
@@ -130,7 +139,8 @@ const update = (data) => {
       .attr(`class`, `visibilityHidden`);
 
     g.selectAll(`.tick text`)
-      .attr(`class`, d => noDataYears.includes(d) ? `no-data` : ``);
+      .attr(`class`, d => noDataYears.includes(d) ? `no-data` : ``)
+      .attr(`dy`, 20);
   };
 
   const customYAxis = g => {
