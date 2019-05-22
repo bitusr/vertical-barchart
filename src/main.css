@@ -59,7 +59,7 @@ body {
 }
 
 .zero-axis {
-  stroke: grey;
+  stroke: rgb(152,152,152);
 }
 
 .bar-rect {
