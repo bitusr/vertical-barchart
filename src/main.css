@@ -64,14 +64,13 @@ body {
 }
 
 .bar-rect {
-  outline: 1px solid;
-  outline-offset: -1px;
+  stroke-width: 2px;
 }
 
 .bar-rect--positive {
   fill: orange;
   fill-opacity: 0.5;
-  outline-color: darkorange;
+  stroke: darkorange;
 }
 
 .bar-rect--positive:hover {
@@ -81,7 +80,7 @@ body {
 .bar-rect--negative {
   fill: red;
   fill-opacity: 0.7;
-  outline-color: rgb(250,128,114);
+  stroke: rgb(250,128,114);
 }
 
 .bar-rect--negative:hover {
