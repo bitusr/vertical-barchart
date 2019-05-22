@@ -67,28 +67,37 @@ const getYDomainExtent = ([min, max]) => {
   return [min, max];
 };
 
-// AXIS
-svg.append(`g`)
-  .attr(`id`, `x-axis`)
-  .attr(`transform`, `translate(0, ${height})`);
-
-svg.append(`g`)
-  .attr(`id`, `y-axis`);
-
-const xAxis = d3.axisBottom(xScale);
-
+// FORMATTERS
 const formatNumber = d => d3.format('.2s')(d)
   .replace(`k`, `K`)
   .replace(`M`, `Mio`)
-  .replace(`G`, `B`);
+  .replace(`G`, `Bn`);
+
+// AXIS
+svg.append(`g`)
+  .attr(`id`, `tabbed-bar-chart__x-axis`)
+  .attr(`transform`, `translate(0, ${height})`);
+
+svg.append(`g`)
+  .attr(`id`, `tabbed-bar-chart__y-axis`);
+
+const xAxis = d3.axisBottom(xScale);
 
 const yAxis = d3.axisLeft(yScale)
   .tickSize(-width)
   .tickFormat(formatNumber);
 
+const zeroPseudoAxis = svg.append(`g`)
+  .attr(`id`, `tabbed-bar-chart__zero-axis`);
+
+zeroPseudoAxis
+  .append(`line`)
+  .attr(`class`, `zero-axis`)
+  .attr(`x2`, width);
+
 const update = (data) => {
-  const yearsExtent = d3.extent(data, d => +d.year);
-  const amountExtent = d3.extent(data, d => +d.value);
+  const yearsExtent = d3.extent(data, ({ year }) => +year);
+  const amountExtent = d3.extent(data, ({ value }) => +value);
   const valsWithinExtentOrBounds = getValsWithinExtentOrBounds(yearsExtent, allowedExtent);
   const noDataYears = getNoDataYears(data, valsWithinExtentOrBounds);
 
@@ -149,16 +158,18 @@ const update = (data) => {
       .attr(`class`, `visibilityHidden`);
 
     g.selectAll(`.tick line`)
-      .attr(`stroke`, `#d8d8d8`);
+      .attr(`stroke`, d => d === 0 ? `none` : `#d8d8d8`);
 
     g.selectAll(`.tick text`)
       .attr(`x`, -5)
       .attr(`dy`, 4);
   };
 
-  d3.select(`#x-axis`).call(customXAxis);
+  d3.select(`#tabbed-bar-chart__x-axis`).call(customXAxis);
 
-  d3.select(`#y-axis`).call(customYAxis);
+  d3.select(`#tabbed-bar-chart__y-axis`).call(customYAxis);
+
+  zeroPseudoAxis.attr(`transform`, (yScale(0) ? `translate(0, ${yScale(0)})` : `translate(0, ${height})`));
 };
 
 // DATA HANDLING

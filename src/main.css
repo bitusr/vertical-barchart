@@ -58,8 +58,12 @@ body {
   box-sizing: border-box;
 }
 
+.zero-axis {
+  stroke: grey;
+}
+
 .bar-rect {
-  stroke-width: 2px;
+  stroke-width: 1px;
 }
 
 .bar-rect--positive {
