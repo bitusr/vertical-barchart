@@ -70,6 +70,42 @@ const DUMMY_DATA = {
       "unit": "",
       "source": "Z"
     },
+    "2016": {
+      "year": 2016,
+      "value": 1305,
+      "unit": "",
+      "source": "Z"
+    },
+    "2015": {
+      "year": 2015,
+      "value": 1200,
+      "unit": "",
+      "source": "Z"
+    },
+    "2014": {
+      "year": 2014,
+      "value": 990,
+      "unit": "",
+      "source": "Z"
+    },
+    "2013": {
+      "year": 2013,
+      "value": 1305,
+      "unit": "",
+      "source": "Z"
+    },
+    "2012": {
+      "year": 2012,
+      "value": 1200,
+      "unit": "",
+      "source": "Z"
+    },
+    "2011": {
+      "year": 2011,
+      "value": 990,
+      "unit": "",
+      "source": "Z"
+    }
   },
   "taxes": {
     "2006": {
