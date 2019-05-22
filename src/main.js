@@ -158,7 +158,8 @@ const update = (data) => {
       .attr(`class`, `visibilityHidden`);
 
     g.selectAll(`.tick line`)
-      .attr(`stroke`, d => d === 0 ? `none` : `#d8d8d8`);
+      .attr(`stroke`, `#d8d8d8`)
+      .attr(`visibility`, d => d === 0 ? `hidden` : `unset`);
 
     g.selectAll(`.tick text`)
       .attr(`x`, -5)
@@ -169,7 +170,12 @@ const update = (data) => {
 
   d3.select(`#tabbed-bar-chart__y-axis`).call(customYAxis);
 
-  zeroPseudoAxis.attr(`transform`, (yScale(0) ? `translate(0, ${yScale(0)})` : `translate(0, ${height})`));
+  zeroPseudoAxis
+    .attr(`transform`, () => {
+      const yScaleZero = yScale(0);
+      const y = Number.isNaN(yScaleZero) ? height : yScaleZero;
+      return `translate(0, ${y})`;
+    });
 };
 
 // DATA HANDLING
