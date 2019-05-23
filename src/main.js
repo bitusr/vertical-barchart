@@ -17,7 +17,7 @@ const TAB_ELEMENTS = document.querySelectorAll(`.tab`);
 // UTILS
 const getNumberOfYearsPriorTo = (date, numberOfYears) => {
   const lastYear = new Date(date).getFullYear();
-  return [...Array(numberOfYears)].map((it, i) => i === 0 ? lastYear : lastYear - i);
+  return Array.from(Array(numberOfYears), (it, i) => i === 0 ? lastYear : lastYear - i);
 };
 
 const removeClass = (elements, className) => [...elements].forEach(it => it.classList.remove(className));
@@ -29,7 +29,7 @@ const clampToValOrUpperBound = (val, maxBound) => val < maxBound ? val : maxBoun
 const buildArrayOfIntsWithin = ([min, max]) => {
   const numberToIncludeMaxValue = 1;
   const amount = max - min + numberToIncludeMaxValue;
-  return [...Array(amount)].map((it, i) => min + i);
+  return Array.from(Array(amount), (it, i) => min + i);
 };
 
 const getValsWithinExtentOrBounds = ([min, max], [minBound, maxBound]) => {
