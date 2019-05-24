@@ -106,7 +106,7 @@ const update = (data) => {
   yScale.domain(getYDomainExtent(amountExtent));
 
   let bar = svg.selectAll(`.bar`)
-    .data(data, d => +d.value);
+    .data(data, ({ value }) => +value);
 
   bar.exit().remove();
 
@@ -121,7 +121,7 @@ const update = (data) => {
     });
 
   barEnter.append(`rect`)
-    .attr(`class`, d => `bar-rect ${+d.value < 0 ? `bar-rect--negative` : `bar-rect--positive`}`)
+    .attr(`class`, ({ value }) => `bar-rect ${+value < 0 ? `bar-rect--negative` : `bar-rect--positive`}`)
     .attr(`y`, ({ value }) => +value >= 0 ? yScale(+value) : yScale(0))
     .attr(`width`, barWidth) // hack for FF
     .attr(`height`, ({ value }) => Math.abs(yScale(+value) - yScale(0)));
@@ -195,8 +195,10 @@ const dataGenerator = data => tab => {
   const extent = d3.extent(tabData, d => +d);
   const allowedYears = getValsWithinExtentOrBounds(extent, allowedExtent);
   return allowedYears
-    .map(it => data.hasOwnProperty(tab) && data[tab][it])
-    .filter(it => it !== undefined);
+    .reduce((acc, it) => {
+      if (data[tab].hasOwnProperty(it)) return acc.concat(data[tab][it]);
+      return acc;
+    }, [])
 };
 
 // INITIAL CALL
