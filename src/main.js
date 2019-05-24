@@ -22,9 +22,9 @@ const getNumberOfYearsPriorTo = (date, numberOfYears) => {
 
 const removeClass = (elements, className) => [...elements].forEach(it => it.classList.remove(className));
 
-const clampToValOrLowerBound = (val, minBound) => val > minBound ? val : minBound;
+const clampToValOrMinBound = (val, minBound) => val > minBound ? val : minBound;
 
-const clampToValOrUpperBound = (val, maxBound) => val < maxBound ? val : maxBound;
+const clampToValOrMaxBound = (val, maxBound) => val < maxBound ? val : maxBound;
 
 const buildArrayOfIntsWithin = ([min, max]) => {
   const numberToIncludeMaxValue = 1;
@@ -33,8 +33,8 @@ const buildArrayOfIntsWithin = ([min, max]) => {
 };
 
 const getValsWithinExtentOrBounds = ([min, max], [minBound, maxBound]) => {
-  const minAllowed = clampToValOrLowerBound(min, minBound);
-  const maxAllowed = clampToValOrUpperBound(max, maxBound);
+  const minAllowed = clampToValOrMinBound(min, minBound);
+  const maxAllowed = clampToValOrMaxBound(max, maxBound);
   if (minAllowed > maxAllowed) return buildArrayOfIntsWithin([minBound, maxBound]);
   return buildArrayOfIntsWithin([minAllowed, maxAllowed]);
 };
