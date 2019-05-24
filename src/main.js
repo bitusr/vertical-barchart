@@ -28,8 +28,8 @@ const clampToValOrMaxBound = (val, maxBound) => val < maxBound ? val : maxBound;
 
 const buildArrayOfIntsWithin = ([min, max]) => {
   const numberToIncludeMaxValue = 1;
-  const amount = max - min + numberToIncludeMaxValue;
-  return Array.from(Array(amount), (it, i) => min + i);
+  const length = max - min + numberToIncludeMaxValue;
+  return Array.from(Array(length), (it, i) => min + i);
 };
 
 const getValsWithinExtentOrBounds = ([min, max], [minBound, maxBound]) => {
@@ -181,9 +181,9 @@ const update = (data) => {
 // DATA HANDLING
 const allowedExtent = d3.extent(lastTenYears);
 
-const getNoDataYears = (dataYears, allowedYears) => {
+const getNoDataYears = (data, allowedYears) => {
   const copy = [...allowedYears];
-  dataYears.forEach(({ year }) => {
+  data.forEach(({ year }) => {
     const index = copy.indexOf(year);
     if (index !== -1) copy.splice(index, 1);
   });
