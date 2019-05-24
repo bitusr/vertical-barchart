@@ -64,7 +64,7 @@ body {
 }
 
 .bar-rect {
-  stroke-width: 2px;
+  stroke-width: 1px;
 }
 
 .bar-rect--positive {
