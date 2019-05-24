@@ -96,8 +96,8 @@ zeroPseudoAxis
   .attr(`x2`, width);
 
 const update = (data) => {
-  const yearsExtent = d3.extent(data, ({ year }) => +year);
-  const amountExtent = d3.extent(data, ({ value }) => +value);
+  const yearsExtent = d3.extent(data, ({ year }) => year);
+  const amountExtent = d3.extent(data, ({ value }) => value);
   const valsWithinExtentOrBounds = getValsWithinExtentOrBounds(yearsExtent, allowedExtent);
   const noDataYears = getNoDataYears(data, valsWithinExtentOrBounds);
 
@@ -106,7 +106,7 @@ const update = (data) => {
   yScale.domain(getYDomainExtent(amountExtent));
 
   let bar = svg.selectAll(`.bar`)
-    .data(data, ({ value }) => +value);
+    .data(data, ({ value }) => value);
 
   bar.exit().remove();
 
@@ -116,28 +116,28 @@ const update = (data) => {
     .attr(`transform`, ({ year }) => {
       const halfBarWidth = barWidth / 2;
       const halfBandWidth = xScale.bandwidth() / 2;
-      const xStartingPointForBar = xScale(+year) + halfBandWidth - halfBarWidth;
+      const xStartingPointForBar = xScale(year) + halfBandWidth - halfBarWidth;
       return `translate(${xStartingPointForBar}, 0)`
     });
 
   barEnter.append(`rect`)
-    .attr(`class`, ({ value }) => `bar-rect ${+value < 0 ? `bar-rect--negative` : `bar-rect--positive`}`)
-    .attr(`y`, ({ value }) => +value >= 0 ? yScale(+value) : yScale(0))
+    .attr(`class`, ({ value }) => `bar-rect ${value < 0 ? `bar-rect--negative` : `bar-rect--positive`}`)
+    .attr(`y`, ({ value }) => value >= 0 ? yScale(value) : yScale(0))
     .attr(`width`, barWidth) // hack for FF
-    .attr(`height`, ({ value }) => Math.abs(yScale(+value) - yScale(0)));
+    .attr(`height`, ({ value }) => Math.abs(yScale(value) - yScale(0)));
 
   barEnter
     .append(`text`)
-    .attr(`class`, ({ value }) => `bar-text ${+value < 0 ? `bar-text--negative` : `bar-text--positive`}`)
-    .attr(`y`, ({ value }) => +value >= 0 ? yScale(+value) - 5 : yScale(+value) + 12)
+    .attr(`class`, ({ value }) => `bar-text ${value < 0 ? `bar-text--negative` : `bar-text--positive`}`)
+    .attr(`y`, ({ value }) => value >= 0 ? yScale(value) - 5 : yScale(value) + 12)
     .attr(`x`, barWidth / 2)
     .attr(`text-anchor`, `middle`)
-    .text(({ value }) => formatNumber(+value));
+    .text(({ value }) => formatNumber(value));
 
   bar = barEnter.merge(bar);
 
   bar.select(`.bar-rect`)
-    .attr(`height`, ({ value }) => Math.abs(yScale(+value) - yScale(0)));
+    .attr(`height`, ({ value }) => Math.abs(yScale(value) - yScale(0)));
 
   const customXAxis = g => {
     g.call(xAxis)
@@ -191,14 +191,20 @@ const getNoDataYears = (data, allowedYears) => {
 };
 
 const dataGenerator = data => tab => {
-  const tabData = Object.keys(data[tab]);
-  const extent = d3.extent(tabData, d => +d);
+  const tabData = data[tab] || {};
+  const extent = d3.extent(Object.keys(tabData), d => +d);
   const allowedYears = getValsWithinExtentOrBounds(extent, allowedExtent);
   return allowedYears
     .reduce((acc, it) => {
-      if (data[tab].hasOwnProperty(it)) return acc.concat(data[tab][it]);
+      if (tabData.hasOwnProperty(it)) {
+        return acc.concat({
+          ...tabData[it],
+          year: +tabData[it].year,
+          value: +tabData[it].value
+        });
+      }
       return acc;
-    }, [])
+    }, []);
 };
 
 // INITIAL CALL
