@@ -19,6 +19,7 @@ build/
 .env
 
 # Data directory and an exception for .gitkeep
+data/*
 !data/.gitkeep
 
 # Python interpreter
