@@ -39,10 +39,6 @@ const getValsWithinExtentOrBounds = ([min, max], [minBound, maxBound]) => {
   return buildArrayOfIntsWithin([minAllowed, maxAllowed]);
 };
 
-const keepNegative = x => (x < 0 ? x : 0);
-
-const keepPositive = x => (x > 0 ? x : 0);
-
 // GRAPH
 const margin = { top: 20, right: 0, bottom: 30, left: 50 };
 const width = 860 - margin.left - margin.right;
@@ -65,7 +61,7 @@ const xScale = d3.scaleBand()
 const yScale = d3.scaleLinear()
   .range([height, 0]);
 
-const getYDomainExtent = ([min, max]) => [keepNegative(min), keepPositive(max)];
+const getYDomainExtent = ([min, max]) => [Math.min(min, 0), Math.max(0, max)];
 
 // FORMATTERS
 const formatNumber = d => d3.format('.2s')(d)
