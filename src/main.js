@@ -35,10 +35,6 @@ const getNumberOfYearsPriorTo = (date, numberOfYears) => {
 
 const removeClass = (elements, className) => [...elements].forEach(it => it.classList.remove(className));
 
-const clampToValOrMinBound = (val, minBound) => val > minBound ? val : minBound;
-
-const clampToValOrMaxBound = (val, maxBound) => val < maxBound ? val : maxBound;
-
 const buildArrayOfIntsWithin = ([min, max]) => {
   const numberToIncludeMaxValue = 1;
   const length = max - min + numberToIncludeMaxValue;
@@ -46,9 +42,12 @@ const buildArrayOfIntsWithin = ([min, max]) => {
 };
 
 const getValsWithinExtentOrBounds = ([min, max], [minBound, maxBound]) => {
-  const minAllowed = clampToValOrMinBound(min, minBound);
-  const maxAllowed = clampToValOrMaxBound(max, maxBound);
-  if (minAllowed > maxAllowed) return buildArrayOfIntsWithin([minBound, maxBound]);
+  const minAllowed = Math.max(min, minBound);
+  const maxAllowed = Math.min(max, maxBound);
+  const isAllowedValNaN = Number.isNaN(minAllowed) || Number.isNaN(maxAllowed);
+  if (minAllowed > maxAllowed || isAllowedValNaN) {
+    return buildArrayOfIntsWithin([minBound, maxBound]);
+  }
   return buildArrayOfIntsWithin([minAllowed, maxAllowed]);
 };
 
