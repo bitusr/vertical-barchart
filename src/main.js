@@ -3,6 +3,19 @@ const TAB_PROFIT = `profit`;
 const TAB_REVENUE = `revenue`;
 const TAB_EMPLOYEES = `employee_count`;
 const TAB_TAXES = `taxes`;
+const CURRENCY_TO_SYMBOL = {
+  USD: `$`, // US Dollar
+  CAD: `C$`, // Canadian Dollar
+  AUD: `A$`, // Australian Dollar
+  ZAR: `R`, // South African Rand
+  EUR: `€`, // Euro
+  GBP: `£`, // British Pound Sterling
+  CHF: `SFr.`, // Swiss Franc
+  JPY: `¥`, // Japanese Yen
+  CNY: `¥`, // Chinese Yuan
+  KRW: `₩`, // South Korean Won
+  RUB: `₽` // Russian Ruble
+};
 
 // DOM CONSTANTS
 const Tabs = {
@@ -64,7 +77,7 @@ const yScale = d3.scaleLinear()
 const getYDomainExtent = ([min, max]) => [Math.min(min, 0), Math.max(0, max)];
 
 // FORMATTERS
-const formatNumber = d => d3.format('.2s')(d)
+const formatNumber = d => d3.format(`.2s`)(d)
   .replace(`k`, `K`)
   .replace(`M`, `Mio`)
   .replace(`G`, `Bn`);
@@ -128,7 +141,10 @@ const update = (data) => {
     .attr(`y`, ({ value }) => value >= 0 ? yScale(value) - 5 : yScale(value) + 12)
     .attr(`x`, barWidth / 2)
     .attr(`text-anchor`, `middle`)
-    .text(({ value }) => formatNumber(value));
+    .text(({ unit, value}) => {
+      const s = CURRENCY_TO_SYMBOL[unit] ? CURRENCY_TO_SYMBOL[unit] : '';
+      return `${formatNumber(value)} ${s}`;
+    });
 
   bar = barEnter.merge(bar);
 
