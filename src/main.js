@@ -201,7 +201,7 @@ const getNoDataYears = (data, allowedYears) => {
   return copy;
 };
 
-const dataGenerator = data => tab => {
+const getDataConverter = data => tab => {
   const tabData = data[tab] || {};
   const extent = d3.extent(Object.keys(tabData), d => +d);
   const allowedYears = getValsWithinExtentOrBounds(extent, allowedExtent);
@@ -219,7 +219,7 @@ const dataGenerator = data => tab => {
 };
 
 // INITIAL CALL
-const getTabData = dataGenerator(DUMMY_DATA);
+const getTabData = getDataConverter(DUMMY_DATA);
 const data = getTabData(TAB_PROFIT);
 update(data);
 
